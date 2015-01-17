@@ -6,11 +6,14 @@
 # between Leap Motion and you, your company or other organization.             #
 ################################################################################
 
-import Leap, sys, thread, time
-from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
+import Leap, sys, thread, time, math
+from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture, Finger, Bone, Frame, Hand
 
 debug = True
 printData = False
+
+def angle_between(vector1, vector2):
+    return math.degrees(vector1.angle_to(vector2))
 
 class SampleListener(Leap.Listener):
     finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
@@ -180,10 +183,10 @@ def recognize_gesture(hand): #recognizes a gesture from the given hand object
     if debug:
         print "is it an a?"
     for finger in fingers:
-        if finger.type() == TYPE_THUMB:
+        if finger.type() == Finger.TYPE_THUMB:
             pass
-        elif (finger.type() == TYPE_INDEX or finger.type == TYPE_MIDDLE) and ((math.fabs(angle_between(finger.bone(TYPE_PROXIMAL).direction, finger.bone(TYPE_INTERMEDIATE).direction)-270) > forgiveness) or (math.fabs(angle_between(finger\
-.bone(TYPE_PROXIMAL).direction, normal)) > forgiveness)):
+        elif (finger.type() == Finger.TYPE_INDEX or finger.type == Finger.TYPE_MIDDLE) and ((math.fabs(angle_between(finger.bone(Bone.TYPE_PROXIMAL).direction, finger.bone(Bone.TYPE_INTERMEDIATE).direction)-270) > forgiveness) or (math.fabs(angle_between(finger\
+.bone(Bone.TYPE_PROXIMAL).direction, normal)) > forgiveness)):
             a = False
             break
     if a:
